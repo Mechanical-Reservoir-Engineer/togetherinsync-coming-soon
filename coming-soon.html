@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wander - Where Wanderlust Meets Wonder</title>
+    <meta name="description" content="Premium travel planning for the modern adventurer. Individual-first design with seamless collaboration. Coming September 2025.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ocean-blue: #1E3A5F;
+            --sunset-coral: #FF7A5A;
+            --sage-green: #8FBC8F;
+            --cloud-white: #FEFEFE;
+            --charcoal: #2C2C2C;
+            --golden-hour: #FFB347;
+            --mediterranean-blue: #4682B4;
+            --desert-sand: #D2B48C;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Premium Hero Section with Animated Background */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, 
+                var(--sunset-coral) 0%, 
+                var(--golden-hour) 35%, 
+                var(--mediterranean-blue) 70%, 
+                var(--ocean-blue) 100%);
+            overflow: hidden;
+        }
+        
+        /* Animated Mesh Background */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(143, 188, 143, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 179, 71, 0.1) 0%, transparent 50%);
+            animation: meshFloat 20s ease-in-out infinite;
+        }
+        
+        @keyframes meshFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(-10px) rotate(-1deg); }
+        }
+        
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+            animation: float 15s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 15%;
+            animation-delay: -8s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 30%;
+            left: 20%;
+            animation-delay: -5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-5px); }
+            75% { transform: translateY(-15px) translateX(8px); }
+        }
+        
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 2rem;
+            color: var(--cloud-white);
+        }
+        
+        /* Premium Logo */
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(145deg, 
+                var(--cloud-white) 0%, 
+                rgba(255, 255, 255, 0.8) 50%, 
+                rgba(255, 255, 255, 0.9) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            letter-spacing: -0.02em;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes logoGlow {
+            from { text-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+            to { text-shadow: 0 0 40px rgba(255, 255, 255, 0.5), 0 0 60px rgba(255, 122, 90, 0.2); }
+        }
+        
+        /* Premium Tagline */
+        .tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 400;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-style: italic;
+            letter-spacing: 0.02em;
+        }
+        
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-weight: 300;
+            margin-bottom: 4rem;
+            opacity: 0.85;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+        
+        /* Glass Card */
+        .launch-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            margin: 4rem auto;
+            max-width: 500px;
+            box-shadow: 
+                0 8px 32px rgba(30, 58, 95, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .launch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 20px 60px rgba(30, 58, 95, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        .launch-date {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--cloud-white);
+        }
+        
+        .launch-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Premium CTA Button */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(145deg, var(--sunset-coral), var(--golden-hour));
+            color: var(--cloud-white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(255, 122, 90, 0.4);
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 122, 90, 0.6);
+            background: linear-gradient(145deg, var(--golden-hour), var(--sunset-coral));
+        }
+        
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 6rem auto 4rem;
+            max-width: 1000px;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .feature:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+        
+        .feature h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--cloud-white);
+        }
+        
+        .feature p {
+            opacity: 0.85;
+            line-height: 1.6;
+        }
+        
+        /* Security Badge */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(70, 130, 180, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            border: 1px solid rgba(70, 130, 180, 0.3);
+            font-size: 0.95rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 15px rgba(70, 130, 180, 0.2);
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 6rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+        
+        .company-link {
+            color: var(--cloud-white);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            transition: border-color 0.3s ease;
+        }
+        
+        .company-link:hover {
+            border-color: var(--sunset-coral);
+        }
+        
+        /* Social Proof */
+        .social-proof {
+            margin: 2rem 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .user-count {
+            font-weight: 600;
+            color: var(--cloud-white);
+            text-shadow: 0 2px 8px rgba(255, 122, 90, 0.8);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            .container {
+                padding: 0 1.5rem;
+            }
+            
+            .launch-card {
+                padding: 2rem;
+                margin: 2rem auto;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin: 4rem auto 2rem;
+            }
+            
+            .feature {
+                padding: 2rem;
+            }
+        }
+        
+        /* Performance Optimization */
+        .hero, .launch-card, .feature {
+            will-change: transform;
+        }
+        
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="hero" role="main">
+        <!-- Floating Elements for Depth -->
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        
+        <div class="container">
+            <h1 class="logo">Wander</h1>
+            <p class="tagline">Your Dreams, Your Way, Your Crew</p>
+            <p class="subtitle">
+                Premium travel planning for the modern adventurer. Individual-first design with seamless collaboration for couples, families, and groups.
+            </p>
+            
+            <div class="launch-card">
+                <div class="launch-date">Coming October 2025</div>
+                <p class="launch-subtitle">Something extraordinary is being crafted for travelers who dare to dream</p>
+                
+                <div class="social-proof">
+                    Join <span class="user-count">5,000+</span> adventurers getting early access
+                </div>
+                
+                <div class="cta-button" style="cursor: default; opacity: 0.8;">
+                    🚀 Launching October 2025
+                </div>
+                
+                <div class="security-badge">
+                    🛡️ Built with security and privacy first
+                </div>
+            </div>
+            
+            <section class="features" aria-labelledby="features-heading">
+                <h2 id="features-heading" style="display: none;">Features</h2>
+                
+                <div class="feature">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Intelligent Planning</h3>
+                    <p>AI-powered itinerary building that learns your preferences and suggests perfect activities tailored to your unique travel style.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">👥</div>
+                    <h3>Seamless Collaboration</h3>
+                    <p>Individual-first design that transitions beautifully to group planning. Perfect for couples, families, and friend adventures.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Solo Traveler Confidence</h3>
+                    <p>Safety features and decision support that empower solo adventurers to explore the world with complete confidence.</p>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Works Everywhere</h3>
+                    <p>Offline-first design ensures your travel plans are accessible anywhere in the world, even without internet connection.</p>
+                </div>
+            </section>
+            
+            <footer class="footer">
+                © 2025 <a href="#" class="company-link">InSync Solutions LLC</a><br>
+                Crafted with passion for the discerning traveler
+            </footer>
+        </div>
+    </main>
+</body>
+</html>

@@ -537,7 +537,7 @@
                 <p class="launch-subtitle">Something extraordinary is being crafted for travelers who dare to dream</p>
                 
                 <div class="social-proof">
-                    Join <span class="user-count" id="userCount">5,000+</span> adventurers getting early access
+                    Join <span class="user-count" id="userCount">0</span> adventurers getting early access
                 </div>
                 
                 <!-- Early Access Signup Form -->
@@ -662,7 +662,7 @@
                     
                     // Update counter with animation
                     if (userCountElement && data.total_signups) {
-                        animateCounter(userCountElement, data.total_signups + 5000);
+                        animateCounter(userCountElement, data.total_signups);
                     }
                     
                     // Show email status message
@@ -709,17 +709,18 @@
         
         // Animate counter with smooth transition
         function animateCounter(element, newCount) {
-            const currentCount = parseInt(element.textContent.replace(/[^0-9]/g, '')) || 5000;
-            const targetCount = Math.min(newCount, currentCount + 50); // Prevent huge jumps
+            const currentCount = parseInt(element.textContent.replace(/[^0-9]/g, '')) || 0;
             let current = currentCount;
             
             const timer = setInterval(() => {
-                current += Math.ceil((targetCount - current) / 10);
-                element.textContent = `${current.toLocaleString()}+`;
+                current += Math.ceil((newCount - current) / 10);
+                if (current > newCount) current = newCount;
                 
-                if (current >= targetCount) {
+                element.textContent = current;
+                
+                if (current >= newCount) {
                     clearInterval(timer);
-                    element.textContent = `${targetCount.toLocaleString()}+`;
+                    element.textContent = newCount;
                     // Add sparkle effect
                     element.style.textShadow = '0 0 15px #FFB347, 0 0 25px #FF7A5A';
                     setTimeout(() => {
@@ -764,8 +765,28 @@
             }, 6000);
         }
         
-        // Add some interactive animations
-        document.addEventListener('DOMContentLoaded', function() {
+        // Load real signup count and add interactive animations
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Load real signup count
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/early_access_signups?select=id`, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const userCountElement = document.getElementById('userCount');
+                    if (userCountElement && data.length > 0) {
+                        userCountElement.textContent = data.length;
+                    }
+                }
+            } catch (error) {
+                console.log('Could not load signup count:', error);
+            }
+            
             // Animate floating elements with slight randomization
             const floatingElements = document.querySelectorAll('.floating-element');
             floatingElements.forEach((element, index) => {

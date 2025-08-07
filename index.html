@@ -609,7 +609,7 @@
     </main>
 
     <script>
-        // Early Access Form Handler with Supabase Integration
+        // Enhanced Early Access Form Handler with Email Automation
         document.getElementById('earlyAccessForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -617,6 +617,7 @@
             const submitBtn = document.getElementById('submitBtn');
             const form = document.getElementById('earlyAccessForm');
             const successMessage = document.getElementById('successMessage');
+            const userCountElement = document.getElementById('userCount');
             
             const email = emailInput.value.trim();
             
@@ -629,88 +630,139 @@
             
             // Update button state
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '⏳ Joining VIP List...';
+            submitBtn.innerHTML = '⏳ Adding you to VIP list...';
             
             try {
-                // Check if Supabase is configured
-                if (!SUPABASE_URL || SUPABASE_URL.includes('your-project-ref') || 
-                    !SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes('your-anon-key')) {
-                    
-                    // Fallback to localStorage for development
-                    console.log('Supabase not configured, using localStorage fallback');
-                    
-                    let signups = JSON.parse(localStorage.getItem('earlyAccessSignups') || '[]');
-                    
-                    // Check if email already exists
-                    if (signups.some(signup => signup.email === email)) {
-                        alert('This email is already registered for early access!');
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '✨ Get VIP Early Access';
-                        return;
-                    }
-                    
-                    // Add new signup
-                    const signupData = {
+                // Call your Edge Function for email automation
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                        'apikey': SUPABASE_ANON_KEY
+                    },
+                    body: JSON.stringify({
                         email: email,
-                        timestamp: new Date().toISOString(),
-                        source: 'coming-soon-page'
-                    };
+                        signup_source: 'coming-soon-page'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Success state - VIP welcome
+                    submitBtn.innerHTML = `🎉 Welcome VIP #${data.total_signups}!`;
+                    submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                     
-                    signups.push(signupData);
-                    localStorage.setItem('earlyAccessSignups', JSON.stringify(signups));
-                    
-                    // Show success message
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
-                    
-                    // Update counter
-                    document.getElementById('userCount').textContent = `${signups.length + 5000}+`;
-                    
-                } else {
-                    // Use Supabase integration
-                    const response = await fetch(`${SUPABASE_URL}/rest/v1/rpc/handle_early_access_signup`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'apikey': SUPABASE_ANON_KEY,
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                        },
-                        body: JSON.stringify({
-                            signup_email: email,
-                            signup_source: 'coming-soon-page',
-                            client_user_agent: navigator.userAgent,
-                            client_referrer: document.referrer || null
-                        })
-                    });
-                    
-                    const result = await response.json();
-                    
-                    if (result.success) {
-                        // Hide form and show success message
+                    // Hide form and show success message
+                    setTimeout(() => {
                         form.style.display = 'none';
                         successMessage.style.display = 'block';
-                        
-                        // Update social proof count
-                        setTimeout(() => {
-                            document.getElementById('userCount').textContent = `${result.total_signups + 5000}+`;
-                        }, 1000);
-                        
+                    }, 2000);
+                    
+                    // Update counter with animation
+                    if (userCountElement && data.total_signups) {
+                        animateCounter(userCountElement, data.total_signups + 5000);
+                    }
+                    
+                    // Show email status message
+                    if (data.email_sent) {
+                        showSuccessNotification(`🎉 Welcome to VIP early access! Check ${email} for your welcome email with exclusive benefits.`);
                     } else {
-                        alert(result.error || 'There was an error processing your signup. Please try again.');
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '✨ Get VIP Early Access';
+                        showSuccessNotification(`✅ You're on the VIP list! Welcome email will arrive shortly.`);
+                    }
+                    
+                } else {
+                    // Handle specific errors
+                    if (data.error && data.error.includes('already registered')) {
+                        submitBtn.innerHTML = '✅ Already on VIP list!';
+                        submitBtn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
+                        
+                        setTimeout(() => {
+                            form.style.display = 'none';
+                            successMessage.style.display = 'block';
+                        }, 2000);
+                        
+                        showSuccessNotification('You\'re already on our VIP early access list! Check your email for the welcome message.');
+                    } else {
+                        throw new Error(data.error || 'Failed to join VIP list');
                     }
                 }
                 
             } catch (error) {
                 console.error('Signup error:', error);
-                alert('There was an error processing your signup. Please try again.');
                 
-                // Reset button state
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '✨ Get VIP Early Access';
+                // Error state
+                submitBtn.innerHTML = 'Try again';
+                submitBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                
+                alert('Something went wrong. Please try again or email hello@togetherinsync.com');
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '✨ Get VIP Early Access';
+                    submitBtn.style.background = 'linear-gradient(145deg, var(--sunset-coral), var(--golden-hour))';
+                }, 3000);
             }
         });
+        
+        // Animate counter with smooth transition
+        function animateCounter(element, newCount) {
+            const currentCount = parseInt(element.textContent.replace(/[^0-9]/g, '')) || 5000;
+            const targetCount = Math.min(newCount, currentCount + 50); // Prevent huge jumps
+            let current = currentCount;
+            
+            const timer = setInterval(() => {
+                current += Math.ceil((targetCount - current) / 10);
+                element.textContent = `${current.toLocaleString()}+`;
+                
+                if (current >= targetCount) {
+                    clearInterval(timer);
+                    element.textContent = `${targetCount.toLocaleString()}+`;
+                    // Add sparkle effect
+                    element.style.textShadow = '0 0 15px #FFB347, 0 0 25px #FF7A5A';
+                    setTimeout(() => {
+                        element.style.textShadow = '0 2px 8px rgba(255, 122, 90, 0.8)';
+                    }, 1500);
+                }
+            }, 100);
+        }
+        
+        // Show success notification
+        function showSuccessNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #10b981, #059669);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-family: 'Inter', sans-serif;
+                font-weight: 500;
+                z-index: 9999;
+                max-width: 400px;
+                box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Hide notification after delay
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 6000);
+        }
         
         // Add some interactive animations
         document.addEventListener('DOMContentLoaded', function() {

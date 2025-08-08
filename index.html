@@ -607,26 +607,26 @@
                             class="email-input"
                         >
                         <button type="submit" class="cta-button" id="submitBtn">
-                            ðŸ§  Claim Founder Access
+                            🧠 Claim Founder Access
                         </button>
                     </div>
                     <div class="early-access-benefits">
-                        <p class="benefit-text">ðŸŽ <strong>Early Access Founder Rewards:</strong></p>
-                        <p class="small-text">âœ¨ 2 weeks FREE to explore Travel Intelligence</p>
-                        <p class="small-text">ðŸ’Ž 25% lifetime savings for our loyal founders who stay with us</p>
-                        <p class="small-text">ðŸš€ Your founder benefits grow as we add new modules</p>
+                        <p class="benefit-text">🎁 <strong>Early Access Founder Rewards:</strong></p>
+                        <p class="small-text">✨ 2 weeks FREE to explore Travel Intelligence</p>
+                        <p class="small-text">💎 25% lifetime savings for our loyal founders who stay with us</p>
+                        <p class="small-text">🚀 Your founder benefits grow as we add new modules</p>
                     </div>
                 </form>
                 
                 <div id="successMessage" class="success-message" style="display: none;">
-                    <div class="success-icon">ðŸŽ‰</div>
+                    <div class="success-icon">🎉</div>
                     <h3>Welcome to Life Intelligence!</h3>
                     <p>You're now an official founder! Get 2 weeks free when Travel Intelligence launches in October 2025.</p>
                     <p style="font-size: 0.95rem; margin-top: 1.2rem; opacity: 0.9;">As a valued founder, enjoy 25% savings on all our plans as we grow together!</p>
                 </div>
                 
                 <div class="security-badge">
-                    ðŸ›¡ï¸ Built with privacy-first AI and enterprise security
+                    🛡️ Built with privacy-first AI and enterprise security
                 </div>
             </div>
             
@@ -634,28 +634,28 @@
                 <h2 id="features-heading" style="display: none;">Life Intelligence Roadmap</h2>
                 
                 <div class="feature">
-                    <div class="feature-icon">âœˆï¸</div>
+                    <div class="feature-icon">✈️</div>
                     <div class="timeline-tag">October 2025</div>
                     <h3>Travel Intelligence</h3>
                     <p>AI-powered travel planning that learns your preferences. Individual-first design with seamless collaboration. Smart recommendations that get better with every trip you plan.</p>
                 </div>
                 
                 <div class="feature">
-                    <div class="feature-icon">ðŸ“…</div>
+                    <div class="feature-icon">📅</div>
                     <div class="timeline-tag">2026</div>
                     <h3>Life Coordination</h3>
                     <p>Expand beyond travel to family coordination, event planning, and daily life organization. The intelligence you develop in travel planning grows with you.</p>
                 </div>
                 
                 <div class="feature">
-                    <div class="feature-icon">ðŸ§ </div>
+                    <div class="feature-icon">🧠</div>
                     <div class="timeline-tag">Growing Platform</div>
                     <h3>Complete Life Intelligence</h3>
                     <p>The vision: AI that understands your life patterns, preferences, and relationships. Making every aspect of life planning effortlessly intelligent.</p>
                 </div>
                 
                 <div class="feature">
-                    <div class="feature-icon">ðŸŽ</div>
+                    <div class="feature-icon">🎁</div>
                     <div class="timeline-tag">Founder Benefits</div>
                     <h3>Be Part of Our Journey</h3>
                     <p>Early founders who grow with us enjoy exclusive lifetime benefits. Test drive with 2 weeks free, then save 25% as a thank you for believing in our vision from the start.</p>
@@ -663,7 +663,7 @@
             </section>
             
             <footer class="footer">
-                Â© 2025 <a href="#" class="company-link">InSync Solutions LLC</a><br>
+                © 2025 <a href="#" class="company-link">InSync Solutions LLC</a><br>
                 Crafted with AI and dedication for those ready for life intelligence
             </footer>
         </div>
@@ -691,7 +691,7 @@
             
             // Update button state with new messaging
             submitBtn.disabled = true;
-            submitBtn.innerHTML = 'â³ Securing your founder status...';
+            submitBtn.innerHTML = '⏳ Securing your founder status...';
             
             try {
                 // Call Supabase edge function
@@ -712,7 +712,7 @@
                 
                 if (data.success) {
                     // Success state
-                    submitBtn.innerHTML = `ðŸŽ‰ Welcome Founder #${data.total_signups}!`;
+                    submitBtn.innerHTML = `🎉 Welcome Founder #${data.total_signups}!`;
                     submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
                     
                     // Hide form and show success message
@@ -728,15 +728,15 @@
                     
                     // Enhanced success notification
                     if (data.email_sent) {
-                        showSuccessNotification(`ðŸŽ‰ Founder status confirmed! Check ${email} for your exclusive benefits and welcome message.`);
+                        showSuccessNotification(`🎉 Founder status confirmed! Check ${email} for your exclusive benefits and welcome message.`);
                     } else {
-                        showSuccessNotification(`âœ… You're officially a Life Intelligence founder! Welcome to our journey.`);
+                        showSuccessNotification(`✅ You're officially a Life Intelligence founder! Welcome to our journey.`);
                     }
                     
                 } else {
                     // Handle specific errors
                     if (data.error && data.error.includes('already registered')) {
-                        submitBtn.innerHTML = 'âœ… Already a Founder!';
+                        submitBtn.innerHTML = '✅ Already a Founder!';
                         submitBtn.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
                         
                         setTimeout(() => {
@@ -762,7 +762,7 @@
                 // Reset button after delay
                 setTimeout(() => {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'ðŸ§  Claim Founder Access';
+                    submitBtn.innerHTML = '🧠 Claim Founder Access';
                     submitBtn.style.background = 'linear-gradient(145deg, var(--aurora-green), var(--warm-orange))';
                 }, 3500);
             }

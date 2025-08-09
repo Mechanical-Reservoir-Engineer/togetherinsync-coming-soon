@@ -522,6 +522,10 @@
     </div>
 
     <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://ctotrfaheqeluidwnocf.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0b3RyZmFoZXFlbHVpZHdub2NmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MjIxOTIsImV4cCI6MjA3MDA5ODE5Mn0.NqLPI10h-TTXMAC7nHPbCYHx777RoOS6jUdagiyqfJM';
+
         const form = document.getElementById('signup-form');
         const emailInput = document.getElementById('email-input');
         const submitBtn = document.getElementById('submit-btn');
@@ -533,21 +537,69 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = '⚡ Securing Your Spot...';
             
-            // Simulate API call (replace with actual Supabase call)
-            setTimeout(() => {
-                submitBtn.innerHTML = '🎉 Welcome, Founder!';
-                submitBtn.style.background = 'linear-gradient(135deg, #14b8a6, #20c997)';
-                submitBtn.classList.add('success');
+            try {
+                // Call Supabase edge function for signup and welcome email
+                const response = await fetch(`${SUPABASE_URL}/functions/v1/send-welcome-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        signup_source: 'coming-soon-page'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Success - show founder welcome message
+                    submitBtn.innerHTML = '🎉 Welcome, Founder!';
+                    submitBtn.style.background = 'linear-gradient(135deg, #14b8a6, #20c997)';
+                    submitBtn.classList.add('success');
+                    
+                    // Reset after delay
+                    setTimeout(() => {
+                        emailInput.value = '';
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '🧠 Claim Founder Access';
+                        submitBtn.style.background = '';
+                        submitBtn.classList.remove('success');
+                    }, 4000);
+                    
+                } else {
+                    // Handle specific error cases
+                    if (result.error && result.error.includes('already registered')) {
+                        submitBtn.innerHTML = '✅ Already a Founder!';
+                        submitBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                    } else {
+                        submitBtn.innerHTML = '❌ Error - Try Again';
+                        submitBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                        console.error('Signup error:', result.error);
+                    }
+                    
+                    // Reset after delay
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '🧠 Claim Founder Access';
+                        submitBtn.style.background = '';
+                        submitBtn.classList.remove('success');
+                    }, 3000);
+                }
+                
+            } catch (error) {
+                console.error('Network error:', error);
+                submitBtn.innerHTML = '❌ Network Error';
+                submitBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
                 
                 // Reset after delay
                 setTimeout(() => {
-                    emailInput.value = '';
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '🧠 Claim Founder Access';
                     submitBtn.style.background = '';
-                    submitBtn.classList.remove('success');
                 }, 3000);
-            }, 1500);
+            }
         });
     </script>
 </body>

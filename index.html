@@ -59,6 +59,8 @@
                 var(--sherbet) 100%);
             overflow-x: hidden;
             position: relative;
+            touch-action: manipulation;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Background animations */
@@ -378,6 +380,9 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
         }
 
         .company-link {
@@ -392,6 +397,12 @@
         }
 
         @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+            
             .logo {
                 font-size: 4rem;
             }
@@ -412,6 +423,12 @@
             
             .features-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .footer {
+                font-size: 0.8rem;
+                line-height: 1.4;
+                padding: 1rem;
             }
         }
 
